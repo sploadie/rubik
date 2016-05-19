@@ -13,23 +13,26 @@
 #ifndef RUBIKEDGE_H
 # define RUBIKEDGE_H
 
+# include <cstddef>
+# include <exception>
+
 class RubikEdge {
 
 public:
 
 	RubikEdge( void );
-	RubikEdge( int* a, int* b, int* c );
+	RubikEdge( char* a, char* b, char* c );
 	RubikEdge( RubikEdge const & obj );
 
 	~RubikEdge( void );
 
 	RubikEdge & operator=( RubikEdge const & rhs );
-	char operator[]( std::size_t index );
+	char*& operator[]( std::size_t index );
 
-	bool isReady( void );
+	bool isReady( void ) const;
 
-	void setEdgePointers( int* a, int* b, int* c );
-	void setEdge( int a, int b, int c );
+	void setEdgePointers( char* a, char* b, char* c );
+	void setEdge( char a, char b, char c );
 
 private:
 	char*	_edge[3];

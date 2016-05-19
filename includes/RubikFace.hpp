@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 20:07:22 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/16 20:56:27 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:03:23 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ public:
 	void rotate_cc( void );
 
 	char		face[9];
-	RubikEdges	edges[4];
+	RubikEdge	edges[4];
 
 private:
 };

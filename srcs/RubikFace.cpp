@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:07:55 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/19 15:27:56 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:08:07 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void RubikFace::rotate_c( void ) {
 	char tmp_edge[3];
 	int i;
 	// Rotate edges
-	for (i=0; i<3; ++i) { tmp_edge[i] = *(this->edges[3][i]) } // Save last edge (West)
+	for (i=0; i<3; ++i) { tmp_edge[i] = *(this->edges[3][i]); } // Save last edge (West)
 	for (i=1; i<4; ++i) { this->edges[i] = this->edges[i-1]; }
 	this->edges[0].setEdge(tmp_edge[0], tmp_edge[1], tmp_edge[2]); // First edge now equal to last edge (North = West)
 	// Rotate face

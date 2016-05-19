@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 20:50:12 by sraccah           #+#    #+#             */
-/*   Updated: 2016/05/19 19:01:31 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:03:10 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <signal.h>
 #include "Screen.hpp"
+#include "RubikCube.hpp"
 
 // static void		print_data(int row, int col, int hp, int frame_count, int loop_remaining_time)
 // {

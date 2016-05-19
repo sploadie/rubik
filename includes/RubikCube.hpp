@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 20:08:20 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/19 19:01:54 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:03:43 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ public:
 
 	RubikCube & operator=( RubikCube const & rhs );
 
+	void draw( void );
+
 private:
 	RubikFace	_faces[6];
 
 	void reset( void );
 	void draw_block( int x, int y, int color, char c );
-	void draw( void );
 };
 
 #endif
