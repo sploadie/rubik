@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 20:50:12 by sraccah           #+#    #+#             */
-/*   Updated: 2016/05/12 19:52:52 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:01:31 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	 clockToUseconds(clock_t ticks) {
 	return (ticks * 1000000)/CLOCKS_PER_SEC;
 }
 
-static void		print_debug_data(unsigned int frame_count, clock_t loop_remaining_time) {
+static void print_debug_data( unsigned int frame_count, clock_t loop_remaining_time ) {
 	// Display frames
 	move(0, 0);
 	attron(COLOR_PAIR(1));
@@ -99,7 +99,7 @@ static void		print_debug_data(unsigned int frame_count, clock_t loop_remaining_t
 	attroff(COLOR_PAIR(1));
 }
 
-static void		game_loop(void) {
+static void game_loop( void ) {
 	int ch;
 	unsigned int frame_count = 0;
 	clock_t loop_time;
@@ -107,6 +107,9 @@ static void		game_loop(void) {
 
 	// Command History
 	std::string history;
+
+	// Rubiks Cube
+	RubikCube cube;
 
 	// Main loop
 	while (42) {
@@ -141,11 +144,11 @@ static void		game_loop(void) {
 		} else if (ch == 'n') { // DOWN 180
 		}
 		// Draw here
-		// ...
+		cube.draw();
 	}
 }
 
-void resizeHandler(int sig) {
+void resizeHandler( int sig ) {
 	(void)sig;
 	if (LINES < Screen::Height || COLS < Screen::Width) {
 		endwin();

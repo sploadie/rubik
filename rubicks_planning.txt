@@ -1,14 +1,37 @@
-                         
-       U          B L    
-     U   U      B B L L  
-   U   U   U  B B B L L L
-  F  U   U  R B B  D  L L
-  F F  U  R R B  D   D  L
-  F F F R R R  D   D   D 
-    F F R R      D   D   
-      F R          D     
+                        
+      U          B L    
+    U   U      B B L L  
+  U   U   U  B B B L L L
+ F  U   U  R B B  D  L L
+ F F  U  R R B  D   D  L
+ F F F R R R  D   D   D 
+   F F R R      D   D   
+     F R          D     
 
-   U      0
- L F R  1 2 3
-   D      4
-   B      5
+                         
+          U0               B2  L0    
+       U3    U1         B1 B5  L3 L1  
+    U6    U4    U2   B0 B4 B8  L6 L4 L2
+  F0   U7    U5   R2 B3 B7   D0   L7 L5
+  F3 F1   U8   R1 R5 B6   D3    D1   L8
+  F6 F4 F2  R0 R4 R8   D6    D4    D2 
+     F7 F5  R3 R7         D7    D5   
+        F8  R6               D8     
+
+
+UP     U  0  WHITE
+DOWN   D  1  YELLOW
+LEFT   L  2  CYAN (ORANGE)
+RIGHT  R  3  RED
+FRONT  F  4  GREEN
+BACK   B  5  BLUE
+
+
+          00               52  20    
+       03    01         51 55  23 21  
+    06    04    02   50 54 58  26 24 22
+  40   07    05   32 53 57   10   27 25
+  43 41   08   31 35 56   13    11   28
+  46 44 42  30 34 38   16    14    12 
+     47 45  33 37         17    15   
+        48  36               18     
