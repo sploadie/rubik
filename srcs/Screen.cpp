@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/08 17:50:04 by sraccah           #+#    #+#             */
-/*   Updated: 2016/05/19 15:41:02 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/20 13:37:45 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ Screen::Screen(void) {
 	// init_pair(5, COLOR_BLACK, COLOR_BLACK);
 	init_pair('U', COLOR_BLACK, COLOR_WHITE);
 	init_pair('D', COLOR_BLACK, COLOR_YELLOW);
-	init_pair('L', COLOR_WHITE, COLOR_CYAN);
+	init_pair('L', COLOR_BLACK, COLOR_CYAN);
 	init_pair('R', COLOR_WHITE, COLOR_RED);
-	init_pair('F', COLOR_WHITE, COLOR_GREEN);
+	init_pair('F', COLOR_BLACK, COLOR_GREEN);
 	init_pair('B', COLOR_WHITE, COLOR_BLUE);
 
 	attron(COLOR_PAIR(1));

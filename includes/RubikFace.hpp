@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 20:07:22 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/19 19:03:23 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/20 18:18:52 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ public:
 	~RubikFace( void );
 
 	RubikFace & operator=( RubikFace const & rhs );
+	char & operator[]( std::size_t index );
 
 	void reset( char c );
 

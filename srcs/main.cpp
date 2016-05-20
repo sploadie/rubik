@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/06 20:50:12 by sraccah           #+#    #+#             */
-/*   Updated: 2016/05/19 19:03:10 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/20 20:02:07 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <ctime>
+#include <cctype>
 #include <string>
+#include <algorithm>
 #include <signal.h>
 #include "Screen.hpp"
 #include "RubikCube.hpp"
@@ -79,11 +81,11 @@
 // 	attroff(COLOR_PAIR(1));
 // }
 
-int	 clockToMilliseconds(clock_t ticks) {
-	return (ticks * 1000)/CLOCKS_PER_SEC;
-}
+// static int clockToMilliseconds(clock_t ticks) {
+// 	return (ticks * 1000)/CLOCKS_PER_SEC;
+// }
 
-int	 clockToUseconds(clock_t ticks) {
+static int clockToUseconds(clock_t ticks) {
 	return (ticks * 1000000)/CLOCKS_PER_SEC;
 }
 
@@ -100,7 +102,7 @@ static void print_debug_data( unsigned int frame_count, clock_t loop_remaining_t
 	attroff(COLOR_PAIR(1));
 }
 
-static void game_loop( void ) {
+static std::string game_loop( RubikCube cube ) {
 	int ch;
 	unsigned int frame_count = 0;
 	clock_t loop_time;
@@ -109,8 +111,8 @@ static void game_loop( void ) {
 	// Command History
 	std::string history;
 
-	// Rubiks Cube
-	RubikCube cube;
+	// To solve or not to solve
+	bool solve = false;
 
 	// Main loop
 	while (42) {
@@ -119,34 +121,48 @@ static void game_loop( void ) {
 		loop_start_time = clock();
 
 		// Read Input (Also calls refresh)
+		// refresh();
 		ch = getch();
-		clear();
+		// clear();
 		print_debug_data(frame_count, loop_time);
 		// if (ch == KEY_LEFT) {
 		if (ch == 'q' || ch == 'Q') {
 			break;
-		} else if (ch == 'w') { // UP C
-		} else if (ch == 'e') { // UP CC
-		} else if (ch == 'r') { // UP 180
-		} else if (ch == 'a') { // FRONT C
-		} else if (ch == 's') { // FRONT CC
-		} else if (ch == 'd') { // FRONT 180
-		} else if (ch == 'z') { // RIGHT C
-		} else if (ch == 'x') { // RIGHT CC
-		} else if (ch == 'c') { // RIGHT 180
-		} else if (ch == 't') { // BACK C
-		} else if (ch == 'y') { // BACK CC
-		} else if (ch == 'u') { // BACK 180
-		} else if (ch == 'g') { // LEFT C
-		} else if (ch == 'h') { // LEFT CC
-		} else if (ch == 'j') { // LEFT 180
-		} else if (ch == 'v') { // DOWN C
-		} else if (ch == 'b') { // DOWN CC
-		} else if (ch == 'n') { // DOWN 180
+		} else if (ch == 'w') { cube[0].rotate_cc(); history.append(" U");  // UP C
+		} else if (ch == 'e') { cube[0].rotate_c();  history.append(" U'"); // UP CC
+		} else if (ch == 'r') { cube[0].rotate_2();  history.append(" U2"); // UP 180
+		} else if (ch == 'a') { cube[4].rotate_cc(); history.append(" F");  // FRONT C
+		} else if (ch == 's') { cube[4].rotate_c();  history.append(" F'"); // FRONT CC
+		} else if (ch == 'd') { cube[4].rotate_2();  history.append(" F2"); // FRONT 180
+		} else if (ch == 'z') { cube[3].rotate_cc(); history.append(" R");  // RIGHT C
+		} else if (ch == 'x') { cube[3].rotate_c();  history.append(" R'"); // RIGHT CC
+		} else if (ch == 'c') { cube[3].rotate_2();  history.append(" R2"); // RIGHT 180
+		} else if (ch == 't') { cube[5].rotate_cc(); history.append(" B");  // BACK C
+		} else if (ch == 'y') { cube[5].rotate_c();  history.append(" B'"); // BACK CC
+		} else if (ch == 'u') { cube[5].rotate_2();  history.append(" B2"); // BACK 180
+		} else if (ch == 'g') { cube[2].rotate_cc(); history.append(" L");  // LEFT C
+		} else if (ch == 'h') { cube[2].rotate_c();  history.append(" L'"); // LEFT CC
+		} else if (ch == 'j') { cube[2].rotate_2();  history.append(" L2"); // LEFT 180
+		} else if (ch == 'v') { cube[1].rotate_cc(); history.append(" D");  // DOWN C
+		} else if (ch == 'b') { cube[1].rotate_c();  history.append(" D'"); // DOWN CC
+		} else if (ch == 'n') { cube[1].rotate_2();  history.append(" D2"); // DOWN 180
+		} else if (ch == KEY_ENTER) {
+			solve = true; break;
 		}
 		// Draw here
 		cube.draw();
+		move(11, 0);
+		attron(COLOR_PAIR(1));
+		printw("History:");
+		printw(history.c_str());
+		attroff(COLOR_PAIR(1));
 	}
+
+	if (solve) {
+		// Solve
+	}
+
+	return history;
 }
 
 void resizeHandler( int sig ) {
@@ -158,9 +174,27 @@ void resizeHandler( int sig ) {
 	}
 }
 
-int	main( void ) {
+char upcase(char c) { return std::toupper(c); }
+
+int	main( int argc, char* argv[] ) {
+	// Rubiks Cube
+	RubikCube cube;
+
+	// Combine arguments and pass to cube
+	std::string args;
+	if (argc > 1) {
+		int i;
+		for (i=1; i<argc; ++i) {
+			if (args.size() != 0) args.append(" ");
+			args.append(argv[i]);
+		}
+		std::transform(args.begin(), args.end(), args.begin(), upcase);
+	}
+	if (args.size() > 0) cube.apply(args);
+
 	// Start ncurses
-	Screen 		scr;
+	Screen * 	scr = new Screen();
+
 	// Handle Screen Size
 	if (LINES < Screen::Height || COLS < Screen::Width) {
 		endwin();
@@ -170,7 +204,7 @@ int	main( void ) {
 	signal(SIGWINCH, &resizeHandler);
 
 	// Display an intro message
-	scr.hello();
+	scr->hello();
 	// Wait until the user press a key
 	nodelay(stdscr, FALSE);
 	if (getch() == 'q') { return 0; }
@@ -178,8 +212,16 @@ int	main( void ) {
 	// Clear the screen before game loop
 	clear();
 
+	// Create history
+	std::string history;
+
 	// GAME LOOP
-	game_loop();
-	
+	history = game_loop(cube);
+	history.erase(0,1);
+
+	delete scr;
+	// std::cout << "Input: " << history << std::endl;
+	// std::cout << "History:" << history << std::endl;
+	std::cout << history << std::endl;
 	return 0;
 }
