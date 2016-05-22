@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 20:07:22 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/20 18:18:52 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/22 11:53:54 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ public:
 	~RubikFace( void );
 
 	RubikFace & operator=( RubikFace const & rhs );
-	char & operator[]( std::size_t index );
+	int & operator[]( std::size_t index );
 
 	void reset( char c );
 
@@ -34,7 +34,7 @@ public:
 	void rotate_2( void );
 	void rotate_cc( void );
 
-	char		face[9];
+	int			face[9];
 	RubikEdge	edges[4];
 
 private:

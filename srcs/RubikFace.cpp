@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:07:55 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/20 18:22:26 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/22 12:00:53 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ RubikFace & RubikFace::operator=( RubikFace const & rhs ) {
 	return *this;
 }
 
-char & RubikFace::operator[]( std::size_t index ) { return this->face[index]; }
+int & RubikFace::operator[]( std::size_t index ) { return this->face[index]; }
 
 void RubikFace::reset( char c ) {
-	for (int i=0; i<9; ++i) { this->face[i] = c; }
+	int val = static_cast<int>(c);
+	val = val << 8;
+	for (int i=0; i<9; ++i) { this->face[i] = val + i; }
 }
 
 void RubikFace::rotate_c( void ) {
-	char tmp_face[9];
-	char tmp_edge[3];
+	int tmp_face[9];
+	int tmp_edge[3];
 	int i;
 	// Rotate edges
 	for (i=0; i<3; ++i) { tmp_edge[i] = *(this->edges[3][i]); } // Save last edge (West)
@@ -55,8 +57,8 @@ void RubikFace::rotate_c( void ) {
 void RubikFace::rotate_2( void )  { this->rotate_c(); this->rotate_c(); }
 
 void RubikFace::rotate_cc( void ) {
-	char tmp_face[9];
-	char tmp_edge[3];
+	int tmp_face[9];
+	int tmp_edge[3];
 	int i;
 	// Rotate edges
 	for (i=0; i<3; ++i) { tmp_edge[i] = *(this->edges[0][i]); } // Save last edge (West)

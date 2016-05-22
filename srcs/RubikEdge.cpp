@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:07:55 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/19 19:09:56 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/22 11:49:56 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ RubikEdge::RubikEdge( void ) {
 	this->_edge[2] = nullptr;
 }
 
-RubikEdge::RubikEdge( char* a, char* b, char* c ) { this->setEdgePointers(a, b, c); }
+RubikEdge::RubikEdge( int* a, int* b, int* c ) { this->setEdgePointers(a, b, c); }
 
 RubikEdge::RubikEdge( RubikEdge const & obj )  { this->setEdgePointers(obj._edge[0], obj._edge[1], obj._edge[2]); } // COPIES POINTERS, NOT VALUES
 
@@ -33,7 +33,7 @@ RubikEdge & RubikEdge::operator=( RubikEdge const & rhs ) { // COPIES VALUES, NO
 	return *this;
 }
 
-char*& RubikEdge::operator[]( std::size_t index ) { return this->_edge[index]; }
+int*& RubikEdge::operator[]( std::size_t index ) { return this->_edge[index]; }
 
 bool RubikEdge::isReady( void ) const {
 	if ( this->_edge[0] && this->_edge[1] && this->_edge[2] )
@@ -41,13 +41,13 @@ bool RubikEdge::isReady( void ) const {
 	return false;
 }
 
-void RubikEdge::setEdgePointers( char* a, char* b, char* c ) { // COPIES POINTERS, NOT VALUES
+void RubikEdge::setEdgePointers( int* a, int* b, int* c ) { // COPIES POINTERS, NOT VALUES
 	this->_edge[0] = a;
 	this->_edge[1] = b;
 	this->_edge[2] = c;
 }
 
-void RubikEdge::setEdge( char a, char b, char c ) { // COPIES POINTERS, NOT VALUES
+void RubikEdge::setEdge( int a, int b, int c ) { // COPIES POINTERS, NOT VALUES
 	*(this->_edge[0]) = a;
 	*(this->_edge[1]) = b;
 	*(this->_edge[2]) = c;

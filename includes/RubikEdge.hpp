@@ -21,21 +21,21 @@ class RubikEdge {
 public:
 
 	RubikEdge( void );
-	RubikEdge( char* a, char* b, char* c );
+	RubikEdge( int* a, int* b, int* c );
 	RubikEdge( RubikEdge const & obj );
 
 	~RubikEdge( void );
 
 	RubikEdge & operator=( RubikEdge const & rhs );
-	char*& operator[]( std::size_t index );
+	int*& operator[]( std::size_t index );
 
 	bool isReady( void ) const;
 
-	void setEdgePointers( char* a, char* b, char* c );
-	void setEdge( char a, char b, char c );
+	void setEdgePointers( int* a, int* b, int* c );
+	void setEdge( int a, int b, int c );
 
 private:
-	char*	_edge[3];
+	int*	_edge[3];
 };
 
 #endif

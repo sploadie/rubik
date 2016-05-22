@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 20:08:20 by tgauvrit          #+#    #+#             */
-/*   Updated: 2016/05/20 19:30:53 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/05/22 11:57:13 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ private:
 	RubikFace	_faces[6];
 
 	void reset( void );
-	void draw_block( int x, int y, int color, char c );
+	void draw_block( int x, int y, int c );
 };
 
 #endif
