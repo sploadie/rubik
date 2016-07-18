@@ -15,10 +15,6 @@ typedef struct History {
 	char depth_to_go[5 << 20];
 } s_history;
 
-void printIndex( int index ) {
-	std::cout << "Index: " << index << std::endl;
-}
-
 void rotate( char k, s_cubelet cubelet[48] ) {
 	std::string data = "2#6'&78)5+1/AT[NJ_PERLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCEMPOACSRQDF";
 	int i;
@@ -108,10 +104,10 @@ int do_search( s_history *history, s_cubelet cubelet[48], char hash_table[48][69
 					continue;
 				history->moves[history->index + 0] = k;
 				history->rotpt[history->index + 0] = i;
-				++history->index; printIndex(history->index);
+				++history->index;
 				if (do_search(history, cubelet, hash_table, depth - history->search_mode * 2 + 1))
 					return 1;
-				--history->index; printIndex(history->index);
+				--history->index;
 			}
 		}
 	}
@@ -151,16 +147,7 @@ void solve( std::string *mike ) {
 				break;
 		}
 	}
-	std::cout << "History Index: " << static_cast<int>(history.index) << std::endl;
 	for (k = 0; k < history.index; ++k) {
 		std::cout << "FBRLUD"[history.moves[k] + 0] << history.rotpt[k] + 1 << " ";
 	}
-}
-
-int main( int, char **argv ) {
-	std::string mike[20];
-	for (int i = 0; i < 20; ++i) {
-		mike[i] = argv[i + 1];
-	}
-	solve(mike);
 }

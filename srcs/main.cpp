@@ -125,7 +125,7 @@ void draw_screen( std::string str, std::string list, RubikCube cube ) {
 	move(12, 0);
 	attron(COLOR_PAIR(1));
 	std::string *mike = cube.getMikeFormat();
-	printw("Mike:");
+	printw("Mike Reid's Format:");
 	for (int i = 0; i < 20; ++i) {
 		printw(" ");
 		printw(mike[i].c_str());
@@ -134,7 +134,7 @@ void draw_screen( std::string str, std::string list, RubikCube cube ) {
 }
 
 static std::string solve_cube( RubikCube cube ) {
-	std::string mikeString = " Mike:";
+	std::string mikeString = " Mike Reid's Format:";
 	std::string *mike = cube.getMikeFormat();
 	for (int i = 0; i < 20; ++i) {
 		mikeString += ' ';
@@ -143,7 +143,7 @@ static std::string solve_cube( RubikCube cube ) {
 	return mikeString;
 }
 
-static std::string game_loop( RubikCube cube, std::string args ) {
+static std::string game_loop( RubikCube & cube, std::string args ) {
 	int ch;
 
 	// To solve or not to solve
@@ -245,5 +245,8 @@ int	main( int argc, char* argv[] ) {
 	// std::cout << "Input: " << history << std::endl;
 	// std::cout << "History:" << history << std::endl;
 	std::cout << history << std::endl;
+	std::cout << "Solution: ";
+	solve(cube.getMikeFormat());
+	std::cout << std::endl;
 	return 0;
 }

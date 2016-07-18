@@ -23,7 +23,7 @@ SRC_DIR =			srcs/
 COMPILED_DIR_NAME =	compiled
 COMPILED_DIR =		./$(COMPILED_DIR_NAME)/
 
-FILENAMES =			main Screen RubikCube RubikFace RubikEdge
+FILENAMES =			main solve Screen RubikCube RubikFace RubikEdge
 
 COMPILED_PATHS :=	$(addsuffix .o,$(FILENAMES))
 COMPILED_PATHS :=	$(addprefix $(COMPILED_DIR),$(COMPILED_PATHS))
