@@ -120,11 +120,27 @@ void draw_screen( std::string str, std::string list, RubikCube cube ) {
 	printw(str.c_str());
 	printw(list.c_str());
 	attroff(COLOR_PAIR(1));
+
+	// Mike
+	move(12, 0);
+	attron(COLOR_PAIR(1));
+	std::string *mike = cube.getMikeFormat();
+	printw("Mike:");
+	for (int i = 0; i < 20; ++i) {
+		printw(" ");
+		printw(mike[i].c_str());
+	}
+	attroff(COLOR_PAIR(1));
 }
 
 static std::string solve_cube( RubikCube cube ) {
-	static_cast<void>(cube);
-	return std::string(" NOT DONE");
+	std::string mikeString = " Mike:";
+	std::string *mike = cube.getMikeFormat();
+	for (int i = 0; i < 20; ++i) {
+		mikeString += ' ';
+		mikeString += mike[i];
+	}
+	return mikeString;
 }
 
 static std::string game_loop( RubikCube cube, std::string args ) {

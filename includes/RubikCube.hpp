@@ -34,9 +34,13 @@ public:
 	void apply( std::string cmd );
 
 	void draw( void );
+	void draw( int x, int y );
+
+	std::string * getMikeFormat( void );
 
 private:
 	RubikFace	_faces[6];
+	std::string	_mike[20];
 
 	void reset( void );
 	void draw_block( int x, int y, int c );

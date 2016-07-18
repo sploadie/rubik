@@ -29,6 +29,79 @@ RubikCube & RubikCube::operator=( RubikCube const & rhs ) {
 
 RubikFace & RubikCube::operator[]( std::size_t index ) { return this->_faces[index]; }
 
+// UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR
+std::string * RubikCube::getMikeFormat( void ) {
+	int i;
+	for (i = 0; i < 20; ++i) {
+		this->_mike[i] = "";
+	}
+	// First color of edges
+	this->_mike[ 0] += static_cast<char>( this->_faces[0][7] >> 8 ); // UF
+	this->_mike[ 1] += static_cast<char>( this->_faces[0][5] >> 8 ); // UR
+	this->_mike[ 2] += static_cast<char>( this->_faces[0][1] >> 8 ); // UB
+	this->_mike[ 3] += static_cast<char>( this->_faces[0][3] >> 8 ); // UL
+
+	this->_mike[ 4] += static_cast<char>( this->_faces[1][5] >> 8 ); // DF
+	this->_mike[ 5] += static_cast<char>( this->_faces[1][7] >> 8 ); // DR
+	this->_mike[ 6] += static_cast<char>( this->_faces[1][3] >> 8 ); // DB
+	this->_mike[ 7] += static_cast<char>( this->_faces[1][1] >> 8 ); // DL
+
+	this->_mike[ 8] += static_cast<char>( this->_faces[4][5] >> 8 ); // FR
+	this->_mike[ 9] += static_cast<char>( this->_faces[4][3] >> 8 ); // FL
+
+	this->_mike[10] += static_cast<char>( this->_faces[5][3] >> 8 ); // BR
+	this->_mike[11] += static_cast<char>( this->_faces[5][5] >> 8 ); // BL
+
+	// Second color of edges
+	this->_mike[ 0] += static_cast<char>( this->_faces[0].edges[2][1][0] >> 8 ); // UF
+	this->_mike[ 1] += static_cast<char>( this->_faces[0].edges[1][1][0] >> 8 ); // UR
+	this->_mike[ 2] += static_cast<char>( this->_faces[0].edges[0][1][0] >> 8 ); // UB
+	this->_mike[ 3] += static_cast<char>( this->_faces[0].edges[3][1][0] >> 8 ); // UL
+
+	this->_mike[ 4] += static_cast<char>( this->_faces[1].edges[1][1][0] >> 8 ); // DF
+	this->_mike[ 5] += static_cast<char>( this->_faces[1].edges[2][1][0] >> 8 ); // DR
+	this->_mike[ 6] += static_cast<char>( this->_faces[1].edges[3][1][0] >> 8 ); // DB
+	this->_mike[ 7] += static_cast<char>( this->_faces[1].edges[0][1][0] >> 8 ); // DL
+
+	this->_mike[ 8] += static_cast<char>( this->_faces[4].edges[1][1][0] >> 8 ); // FR
+	this->_mike[ 9] += static_cast<char>( this->_faces[4].edges[3][1][0] >> 8 ); // FL
+
+	this->_mike[10] += static_cast<char>( this->_faces[5].edges[3][1][0] >> 8 ); // BR
+	this->_mike[11] += static_cast<char>( this->_faces[5].edges[1][1][0] >> 8 ); // BL
+
+	// First color of corners
+	this->_mike[12] += static_cast<char>( this->_faces[0][8] >> 8 );
+	this->_mike[13] += static_cast<char>( this->_faces[0][2] >> 8 );
+	this->_mike[14] += static_cast<char>( this->_faces[0][0] >> 8 );
+	this->_mike[15] += static_cast<char>( this->_faces[0][6] >> 8 );
+	this->_mike[16] += static_cast<char>( this->_faces[1][8] >> 8 );
+	this->_mike[17] += static_cast<char>( this->_faces[1][2] >> 8 );
+	this->_mike[18] += static_cast<char>( this->_faces[1][0] >> 8 );
+	this->_mike[19] += static_cast<char>( this->_faces[1][6] >> 8 );
+
+	// Second color of corners
+	this->_mike[12] += static_cast<char>( this->_faces[0].edges[2][0][0] >> 8 );
+	this->_mike[13] += static_cast<char>( this->_faces[0].edges[1][0][0] >> 8 );
+	this->_mike[14] += static_cast<char>( this->_faces[0].edges[0][0][0] >> 8 );
+	this->_mike[15] += static_cast<char>( this->_faces[0].edges[3][0][0] >> 8 );
+	this->_mike[16] += static_cast<char>( this->_faces[1].edges[2][0][0] >> 8 );
+	this->_mike[17] += static_cast<char>( this->_faces[1].edges[1][0][0] >> 8 );
+	this->_mike[18] += static_cast<char>( this->_faces[1].edges[0][0][0] >> 8 );
+	this->_mike[19] += static_cast<char>( this->_faces[1].edges[3][0][0] >> 8 );
+	
+	// Third color of corners
+	this->_mike[12] += static_cast<char>( this->_faces[0].edges[1][2][0] >> 8 );
+	this->_mike[13] += static_cast<char>( this->_faces[0].edges[0][2][0] >> 8 );
+	this->_mike[14] += static_cast<char>( this->_faces[0].edges[3][2][0] >> 8 );
+	this->_mike[15] += static_cast<char>( this->_faces[0].edges[2][2][0] >> 8 );
+	this->_mike[16] += static_cast<char>( this->_faces[1].edges[1][2][0] >> 8 );
+	this->_mike[17] += static_cast<char>( this->_faces[1].edges[0][2][0] >> 8 );
+	this->_mike[18] += static_cast<char>( this->_faces[1].edges[3][2][0] >> 8 );
+	this->_mike[19] += static_cast<char>( this->_faces[1].edges[2][2][0] >> 8 );
+
+	return this->_mike;
+}
+
 void RubikCube::reset( void ) {
 	// Set initial colors
 	this->_faces[0].reset('U');
@@ -39,41 +112,41 @@ void RubikCube::reset( void ) {
 	this->_faces[5].reset('B');
 	// Assign edges
 	// Up
-	//			North
+	//			North (Back)
 	this->_faces[0].edges[0][0] = this->_faces[5].face + 2;
 	this->_faces[0].edges[0][1] = this->_faces[5].face + 1;
 	this->_faces[0].edges[0][2] = this->_faces[5].face + 0;
-	//			East
+	//			East (Right)
 	this->_faces[0].edges[1][0] = this->_faces[3].face + 2;
 	this->_faces[0].edges[1][1] = this->_faces[3].face + 1;
 	this->_faces[0].edges[1][2] = this->_faces[3].face + 0;
-	//			South
+	//			South (Front)
 	this->_faces[0].edges[2][0] = this->_faces[4].face + 2;
 	this->_faces[0].edges[2][1] = this->_faces[4].face + 1;
 	this->_faces[0].edges[2][2] = this->_faces[4].face + 0;
-	//			West
+	//			West (Left)
 	this->_faces[0].edges[3][0] = this->_faces[2].face + 2;
 	this->_faces[0].edges[3][1] = this->_faces[2].face + 1;
 	this->_faces[0].edges[3][2] = this->_faces[2].face + 0;
 	// Down
-	//			North
+	//			North (Left)
 	this->_faces[1].edges[0][0] = this->_faces[2].face + 6;
 	this->_faces[1].edges[0][1] = this->_faces[2].face + 7;
 	this->_faces[1].edges[0][2] = this->_faces[2].face + 8;
-	//			East
+	//			East (Front)
 	this->_faces[1].edges[1][0] = this->_faces[4].face + 6;
 	this->_faces[1].edges[1][1] = this->_faces[4].face + 7;
 	this->_faces[1].edges[1][2] = this->_faces[4].face + 8;
-	//			South
+	//			South (Right)
 	this->_faces[1].edges[2][0] = this->_faces[3].face + 6;
 	this->_faces[1].edges[2][1] = this->_faces[3].face + 7;
 	this->_faces[1].edges[2][2] = this->_faces[3].face + 8;
-	//			West
+	//			West (Back)
 	this->_faces[1].edges[3][0] = this->_faces[5].face + 6;
 	this->_faces[1].edges[3][1] = this->_faces[5].face + 7;
 	this->_faces[1].edges[3][2] = this->_faces[5].face + 8;
 	// Left
-	//			North
+	//			North (Up)
 	this->_faces[2].edges[0][0] = this->_faces[0].face + 0;
 	this->_faces[2].edges[0][1] = this->_faces[0].face + 3;
 	this->_faces[2].edges[0][2] = this->_faces[0].face + 6;
@@ -107,19 +180,19 @@ void RubikCube::reset( void ) {
 	this->_faces[3].edges[3][1] = this->_faces[4].face + 5;
 	this->_faces[3].edges[3][2] = this->_faces[4].face + 2;
 	// Front
-	//			North
+	//			North (Up)
 	this->_faces[4].edges[0][0] = this->_faces[0].face + 6;
 	this->_faces[4].edges[0][1] = this->_faces[0].face + 7;
 	this->_faces[4].edges[0][2] = this->_faces[0].face + 8;
-	//			East
+	//			East (Right)
 	this->_faces[4].edges[1][0] = this->_faces[3].face + 0;
 	this->_faces[4].edges[1][1] = this->_faces[3].face + 3;
 	this->_faces[4].edges[1][2] = this->_faces[3].face + 6;
-	//			South
+	//			South (Down)
 	this->_faces[4].edges[2][0] = this->_faces[1].face + 8;
 	this->_faces[4].edges[2][1] = this->_faces[1].face + 5;
 	this->_faces[4].edges[2][2] = this->_faces[1].face + 2;
-	//			West
+	//			West (Left)
 	this->_faces[4].edges[3][0] = this->_faces[2].face + 8;
 	this->_faces[4].edges[3][1] = this->_faces[2].face + 5;
 	this->_faces[4].edges[3][2] = this->_faces[2].face + 2;
@@ -140,6 +213,9 @@ void RubikCube::reset( void ) {
 	this->_faces[5].edges[3][0] = this->_faces[3].face + 8;
 	this->_faces[5].edges[3][1] = this->_faces[3].face + 5;
 	this->_faces[5].edges[3][2] = this->_faces[3].face + 2;
+
+	// Mike Format
+	this->getMikeFormat();
 }
 
 void RubikCube::apply( std::string commands ) {
@@ -183,65 +259,70 @@ void RubikCube::draw_block( int x, int y, int c ) {
 	attroff(COLOR_PAIR(c >> 8));
 }
 
-void RubikCube::draw( void ) {
+void RubikCube::draw() {
+	this->draw(0, 0);
+}
+
+
+void RubikCube::draw( int x, int y ) {
 	// Up
-	this->draw_block( 2,  7, this->_faces[0].face[0]);//, '0');
-	this->draw_block( 3,  9, this->_faces[0].face[1]);//, '1');
-	this->draw_block( 4, 11, this->_faces[0].face[2]);//, '2');
-	this->draw_block( 3,  5, this->_faces[0].face[3]);//, '3');
-	this->draw_block( 4,  7, this->_faces[0].face[4]);//, '4');
-	this->draw_block( 5,  9, this->_faces[0].face[5]);//, '5');
-	this->draw_block( 4,  3, this->_faces[0].face[6]);//, '6');
-	this->draw_block( 5,  5, this->_faces[0].face[7]);//, '7');
-	this->draw_block( 6,  7, this->_faces[0].face[8]);//, '8');
+	this->draw_block( x + 2, y +  7, this->_faces[0].face[0]);//, '0');
+	this->draw_block( x + 3, y +  9, this->_faces[0].face[1]);//, '1');
+	this->draw_block( x + 4, y + 11, this->_faces[0].face[2]);//, '2');
+	this->draw_block( x + 3, y +  5, this->_faces[0].face[3]);//, '3');
+	this->draw_block( x + 4, y +  7, this->_faces[0].face[4]);//, '4');
+	this->draw_block( x + 5, y +  9, this->_faces[0].face[5]);//, '5');
+	this->draw_block( x + 4, y +  3, this->_faces[0].face[6]);//, '6');
+	this->draw_block( x + 5, y +  5, this->_faces[0].face[7]);//, '7');
+	this->draw_block( x + 6, y +  7, this->_faces[0].face[8]);//, '8');
 	// Down
-	this->draw_block( 5, 19, this->_faces[1].face[0]);//, '0');
-	this->draw_block( 6, 21, this->_faces[1].face[1]);//, '1');
-	this->draw_block( 7, 23, this->_faces[1].face[2]);//, '2');
-	this->draw_block( 6, 17, this->_faces[1].face[3]);//, '3');
-	this->draw_block( 7, 19, this->_faces[1].face[4]);//, '4');
-	this->draw_block( 8, 21, this->_faces[1].face[5]);//, '5');
-	this->draw_block( 7, 15, this->_faces[1].face[6]);//, '6');
-	this->draw_block( 8, 17, this->_faces[1].face[7]);//, '7');
-	this->draw_block( 9, 19, this->_faces[1].face[8]);//, '8');
+	this->draw_block( x + 5, y + 19, this->_faces[1].face[0]);//, '0');
+	this->draw_block( x + 6, y + 21, this->_faces[1].face[1]);//, '1');
+	this->draw_block( x + 7, y + 23, this->_faces[1].face[2]);//, '2');
+	this->draw_block( x + 6, y + 17, this->_faces[1].face[3]);//, '3');
+	this->draw_block( x + 7, y + 19, this->_faces[1].face[4]);//, '4');
+	this->draw_block( x + 8, y + 21, this->_faces[1].face[5]);//, '5');
+	this->draw_block( x + 7, y + 15, this->_faces[1].face[6]);//, '6');
+	this->draw_block( x + 8, y + 17, this->_faces[1].face[7]);//, '7');
+	this->draw_block( x + 9, y + 19, this->_faces[1].face[8]);//, '8');
 	// Left
-	this->draw_block( 2, 20, this->_faces[2].face[0]);//, '0');
-	this->draw_block( 3, 22, this->_faces[2].face[1]);//, '1');
-	this->draw_block( 4, 24, this->_faces[2].face[2]);//, '2');
-	this->draw_block( 3, 20, this->_faces[2].face[3]);//, '3');
-	this->draw_block( 4, 22, this->_faces[2].face[4]);//, '4');
-	this->draw_block( 5, 24, this->_faces[2].face[5]);//, '5');
-	this->draw_block( 4, 20, this->_faces[2].face[6]);//, '6');
-	this->draw_block( 5, 22, this->_faces[2].face[7]);//, '7');
-	this->draw_block( 6, 24, this->_faces[2].face[8]);//, '8');
+	this->draw_block( x + 2, y + 20, this->_faces[2].face[0]);//, '0');
+	this->draw_block( x + 3, y + 22, this->_faces[2].face[1]);//, '1');
+	this->draw_block( x + 4, y + 24, this->_faces[2].face[2]);//, '2');
+	this->draw_block( x + 3, y + 20, this->_faces[2].face[3]);//, '3');
+	this->draw_block( x + 4, y + 22, this->_faces[2].face[4]);//, '4');
+	this->draw_block( x + 5, y + 24, this->_faces[2].face[5]);//, '5');
+	this->draw_block( x + 4, y + 20, this->_faces[2].face[6]);//, '6');
+	this->draw_block( x + 5, y + 22, this->_faces[2].face[7]);//, '7');
+	this->draw_block( x + 6, y + 24, this->_faces[2].face[8]);//, '8');
 	// Right
-	this->draw_block( 7,  8, this->_faces[3].face[0]);//, '0');
-	this->draw_block( 6, 10, this->_faces[3].face[1]);//, '1');
-	this->draw_block( 5, 12, this->_faces[3].face[2]);//, '2');
-	this->draw_block( 8,  8, this->_faces[3].face[3]);//, '3');
-	this->draw_block( 7, 10, this->_faces[3].face[4]);//, '4');
-	this->draw_block( 6, 12, this->_faces[3].face[5]);//, '5');
-	this->draw_block( 9,  8, this->_faces[3].face[6]);//, '6');
-	this->draw_block( 8, 10, this->_faces[3].face[7]);//, '7');
-	this->draw_block( 7, 12, this->_faces[3].face[8]);//, '8');
+	this->draw_block( x + 7, y +  8, this->_faces[3].face[0]);//, '0');
+	this->draw_block( x + 6, y + 10, this->_faces[3].face[1]);//, '1');
+	this->draw_block( x + 5, y + 12, this->_faces[3].face[2]);//, '2');
+	this->draw_block( x + 8, y +  8, this->_faces[3].face[3]);//, '3');
+	this->draw_block( x + 7, y + 10, this->_faces[3].face[4]);//, '4');
+	this->draw_block( x + 6, y + 12, this->_faces[3].face[5]);//, '5');
+	this->draw_block( x + 9, y +  8, this->_faces[3].face[6]);//, '6');
+	this->draw_block( x + 8, y + 10, this->_faces[3].face[7]);//, '7');
+	this->draw_block( x + 7, y + 12, this->_faces[3].face[8]);//, '8');
 	// Front
-	this->draw_block( 5,  2, this->_faces[4].face[0]);//, '0');
-	this->draw_block( 6,  4, this->_faces[4].face[1]);//, '1');
-	this->draw_block( 7,  6, this->_faces[4].face[2]);//, '2');
-	this->draw_block( 6,  2, this->_faces[4].face[3]);//, '3');
-	this->draw_block( 7,  4, this->_faces[4].face[4]);//, '4');
-	this->draw_block( 8,  6, this->_faces[4].face[5]);//, '5');
-	this->draw_block( 7,  2, this->_faces[4].face[6]);//, '6');
-	this->draw_block( 8,  4, this->_faces[4].face[7]);//, '7');
-	this->draw_block( 9,  6, this->_faces[4].face[8]);//, '8');
+	this->draw_block( x + 5, y +  2, this->_faces[4].face[0]);//, '0');
+	this->draw_block( x + 6, y +  4, this->_faces[4].face[1]);//, '1');
+	this->draw_block( x + 7, y +  6, this->_faces[4].face[2]);//, '2');
+	this->draw_block( x + 6, y +  2, this->_faces[4].face[3]);//, '3');
+	this->draw_block( x + 7, y +  4, this->_faces[4].face[4]);//, '4');
+	this->draw_block( x + 8, y +  6, this->_faces[4].face[5]);//, '5');
+	this->draw_block( x + 7, y +  2, this->_faces[4].face[6]);//, '6');
+	this->draw_block( x + 8, y +  4, this->_faces[4].face[7]);//, '7');
+	this->draw_block( x + 9, y +  6, this->_faces[4].face[8]);//, '8');
 	// Back
-	this->draw_block( 4, 14, this->_faces[5].face[0]);//, '0');
-	this->draw_block( 3, 16, this->_faces[5].face[1]);//, '1');
-	this->draw_block( 2, 18, this->_faces[5].face[2]);//, '2');
-	this->draw_block( 5, 14, this->_faces[5].face[3]);//, '3');
-	this->draw_block( 4, 16, this->_faces[5].face[4]);//, '4');
-	this->draw_block( 3, 18, this->_faces[5].face[5]);//, '5');
-	this->draw_block( 6, 14, this->_faces[5].face[6]);//, '6');
-	this->draw_block( 5, 16, this->_faces[5].face[7]);//, '7');
-	this->draw_block( 4, 18, this->_faces[5].face[8]);//, '8');
+	this->draw_block( x + 4, y + 14, this->_faces[5].face[0]);//, '0');
+	this->draw_block( x + 3, y + 16, this->_faces[5].face[1]);//, '1');
+	this->draw_block( x + 2, y + 18, this->_faces[5].face[2]);//, '2');
+	this->draw_block( x + 5, y + 14, this->_faces[5].face[3]);//, '3');
+	this->draw_block( x + 4, y + 16, this->_faces[5].face[4]);//, '4');
+	this->draw_block( x + 3, y + 18, this->_faces[5].face[5]);//, '5');
+	this->draw_block( x + 6, y + 14, this->_faces[5].face[6]);//, '6');
+	this->draw_block( x + 5, y + 16, this->_faces[5].face[7]);//, '7');
+	this->draw_block( x + 4, y + 18, this->_faces[5].face[8]);//, '8');
 }
