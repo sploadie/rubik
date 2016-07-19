@@ -16,6 +16,7 @@ typedef struct History {
 } s_history;
 
 void rotate( char k, s_cubelet cubelet[48] ) {
+	std::cout << "K: " << static_cast<int>(k) << std::endl;
 	std::string data = "2#6'&78)5+1/AT[NJ_PERLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCEMPOACSRQDF";
 	int i;
 	if (k < 4) {
