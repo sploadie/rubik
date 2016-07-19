@@ -1,5 +1,6 @@
 ﻿#include <string>
 #include <iostream>
+#include <sstream>
 
 typedef struct Cubelet {
 	char pos;
@@ -16,7 +17,7 @@ typedef struct History {
 } s_history;
 
 void rotate( char k, s_cubelet cubelet[48] ) {
-	std::cout << "K: " << static_cast<int>(k) << std::endl;
+	// std::cout << "K: " << static_cast<int>(k) << std::endl;
 	std::string data = "2#6'&78)5+1/AT[NJ_PERLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCEMPOACSRQDF";
 	int i;
 	if (k < 4) {
@@ -115,12 +116,13 @@ int do_search( s_history *history, s_cubelet cubelet[48], char hash_table[48][69
 	return 0;
 }
 
-void solve( std::string *mike ) {
+std::string solve( std::string *mike ) {
 	// Variables
 	std::string data = "2#6'&78)5+1/AT[NJ_PERLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCEMPOACSRQDF";
 	s_history history;
 	s_cubelet cubelet[48];
 	char hash_table[48][6912];
+	std::stringstream solution;
 
 	// Code
 	std::memset(hash_table, 6, sizeof(hash_table));
@@ -149,6 +151,9 @@ void solve( std::string *mike ) {
 		}
 	}
 	for (k = 0; k < history.index; ++k) {
-		std::cout << "FBRLUD"[history.moves[k] + 0] << history.rotpt[k] + 1 << " ";
+		solution << "FBRLUD"[history.moves[k] + 0] << history.rotpt[k] + 1;
+		if (k < history.index - 1)
+			solution << ' ';
 	}
+	return solution.str();
 }

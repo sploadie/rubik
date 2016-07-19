@@ -231,23 +231,23 @@ void RubikCube::apply( std::string commands ) {
 		list.erase(0, pos);
 		if (cmd == "") {
 			// Skip
-		} else if (cmd == "U")	{ this->_faces[0].rotate_cc(); // UP C
-		} else if (cmd == "U'")	{ this->_faces[0].rotate_c();  // UP CC
+		} else if (cmd == "U'")	{ this->_faces[0].rotate_cc(); // UP C
+		} else if (cmd == "U")	{ this->_faces[0].rotate_c();  // UP CC
 		} else if (cmd == "U2")	{ this->_faces[0].rotate_2();  // UP 180
-		} else if (cmd == "F")	{ this->_faces[4].rotate_cc(); // FRONT C
-		} else if (cmd == "F'")	{ this->_faces[4].rotate_c();  // FRONT CC
+		} else if (cmd == "F'")	{ this->_faces[4].rotate_cc(); // FRONT C
+		} else if (cmd == "F")	{ this->_faces[4].rotate_c();  // FRONT CC
 		} else if (cmd == "F2")	{ this->_faces[4].rotate_2();  // FRONT 180
-		} else if (cmd == "R")	{ this->_faces[3].rotate_cc(); // RIGHT C
-		} else if (cmd == "R'")	{ this->_faces[3].rotate_c();  // RIGHT CC
+		} else if (cmd == "R'")	{ this->_faces[3].rotate_cc(); // RIGHT C
+		} else if (cmd == "R")	{ this->_faces[3].rotate_c();  // RIGHT CC
 		} else if (cmd == "R2")	{ this->_faces[3].rotate_2();  // RIGHT 180
-		} else if (cmd == "B")	{ this->_faces[5].rotate_cc(); // BACK C
-		} else if (cmd == "B'")	{ this->_faces[5].rotate_c();  // BACK CC
+		} else if (cmd == "B'")	{ this->_faces[5].rotate_cc(); // BACK C
+		} else if (cmd == "B")	{ this->_faces[5].rotate_c();  // BACK CC
 		} else if (cmd == "B2")	{ this->_faces[5].rotate_2();  // BACK 180
-		} else if (cmd == "L")	{ this->_faces[2].rotate_cc(); // LEFT C
-		} else if (cmd == "L'")	{ this->_faces[2].rotate_c();  // LEFT CC
+		} else if (cmd == "L'")	{ this->_faces[2].rotate_cc(); // LEFT C
+		} else if (cmd == "L")	{ this->_faces[2].rotate_c();  // LEFT CC
 		} else if (cmd == "L2")	{ this->_faces[2].rotate_2();  // LEFT 180
-		} else if (cmd == "D")	{ this->_faces[1].rotate_cc(); // DOWN C
-		} else if (cmd == "D'")	{ this->_faces[1].rotate_c();  // DOWN CC
+		} else if (cmd == "D'")	{ this->_faces[1].rotate_cc(); // DOWN C
+		} else if (cmd == "D")	{ this->_faces[1].rotate_c();  // DOWN CC
 		} else if (cmd == "D2")	{ this->_faces[1].rotate_2();  // DOWN 180
 		} else { throw std::exception(); }
 	}

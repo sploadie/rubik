@@ -46,6 +46,6 @@ private:
 	void draw_block( int x, int y, int c );
 };
 
-void solve( std::string * mikeFormat );
+std::string solve( std::string * mikeFormat );
 
 #endif

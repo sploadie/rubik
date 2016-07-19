@@ -133,21 +133,8 @@ void draw_screen( std::string str, std::string list, RubikCube cube ) {
 	attroff(COLOR_PAIR(1));
 }
 
-static std::string solve_cube( RubikCube cube ) {
-	std::string mikeString = " Mike Reid's Format:";
-	std::string *mike = cube.getMikeFormat();
-	for (int i = 0; i < 20; ++i) {
-		mikeString += ' ';
-		mikeString += mike[i];
-	}
-	return mikeString;
-}
-
 static std::string game_loop( RubikCube & cube, std::string args ) {
 	int ch;
-
-	// To solve or not to solve
-	bool solve = false;
 
 	// Main loop
 	while (42) {
@@ -159,31 +146,29 @@ static std::string game_loop( RubikCube & cube, std::string args ) {
 		// if (ch == KEY_LEFT) {
 		if (ch == 'q' || ch == 'Q') {
 			break;
-		} else if (ch == 'w') { cube[0].rotate_cc(); args.append(" U");  // UP C
-		} else if (ch == 'e') { cube[0].rotate_c();  args.append(" U'"); // UP CC
+		} else if (ch == 'w') { cube[0].rotate_c();  args.append(" U");  // UP C
+		} else if (ch == 'e') { cube[0].rotate_cc(); args.append(" U'"); // UP CC
 		} else if (ch == 'r') { cube[0].rotate_2();  args.append(" U2"); // UP 180
-		} else if (ch == 'a') { cube[4].rotate_cc(); args.append(" F");  // FRONT C
-		} else if (ch == 's') { cube[4].rotate_c();  args.append(" F'"); // FRONT CC
+		} else if (ch == 'a') { cube[4].rotate_c();  args.append(" F");  // FRONT C
+		} else if (ch == 's') { cube[4].rotate_cc(); args.append(" F'"); // FRONT CC
 		} else if (ch == 'd') { cube[4].rotate_2();  args.append(" F2"); // FRONT 180
-		} else if (ch == 'z') { cube[3].rotate_cc(); args.append(" R");  // RIGHT C
-		} else if (ch == 'x') { cube[3].rotate_c();  args.append(" R'"); // RIGHT CC
+		} else if (ch == 'z') { cube[3].rotate_c();  args.append(" R");  // RIGHT C
+		} else if (ch == 'x') { cube[3].rotate_cc(); args.append(" R'"); // RIGHT CC
 		} else if (ch == 'c') { cube[3].rotate_2();  args.append(" R2"); // RIGHT 180
-		} else if (ch == 't') { cube[5].rotate_cc(); args.append(" B");  // BACK C
-		} else if (ch == 'y') { cube[5].rotate_c();  args.append(" B'"); // BACK CC
+		} else if (ch == 't') { cube[5].rotate_c();  args.append(" B");  // BACK C
+		} else if (ch == 'y') { cube[5].rotate_cc(); args.append(" B'"); // BACK CC
 		} else if (ch == 'u') { cube[5].rotate_2();  args.append(" B2"); // BACK 180
-		} else if (ch == 'g') { cube[2].rotate_cc(); args.append(" L");  // LEFT C
-		} else if (ch == 'h') { cube[2].rotate_c();  args.append(" L'"); // LEFT CC
+		} else if (ch == 'g') { cube[2].rotate_c();  args.append(" L");  // LEFT C
+		} else if (ch == 'h') { cube[2].rotate_cc(); args.append(" L'"); // LEFT CC
 		} else if (ch == 'j') { cube[2].rotate_2();  args.append(" L2"); // LEFT 180
-		} else if (ch == 'v') { cube[1].rotate_cc(); args.append(" D");  // DOWN C
-		} else if (ch == 'b') { cube[1].rotate_c();  args.append(" D'"); // DOWN CC
+		} else if (ch == 'v') { cube[1].rotate_c();  args.append(" D");  // DOWN C
+		} else if (ch == 'b') { cube[1].rotate_cc(); args.append(" D'"); // DOWN CC
 		} else if (ch == 'n') { cube[1].rotate_2();  args.append(" D2"); // DOWN 180
 		} else if (ch == ' ') {
-			solve = true; break;
+			break;
 		}
 		draw_screen("Arguments:", args, cube);
 	}
-
-	if (solve) return solve_cube(cube);
 	return args;
 }
 
@@ -199,14 +184,36 @@ void resizeHandler( int sig ) {
 char upcase(char c) { return std::toupper(c); }
 
 int	main( int argc, char* argv[] ) {
-	// Rubiks Cube
 	RubikCube cube;
+	bool verbose = false;
+	bool interactive = false;
+
+	while (true) {
+		if (argc > 1) {
+			if (std::string(argv[1]) == "-i") {
+				// Interactive
+				interactive = true;
+			} else if (std::string(argv[1]) == "-v") {
+				// Verbose
+				verbose = true;
+			} else if (std::string(argv[1]) == "-vi" || std::string(argv[1]) == "-iv") {
+				// Both
+				interactive = true;
+				verbose = true;
+			} else {
+				break;
+			}
+			--argc;
+			++argv;
+			continue;
+		}
+		break;
+	}
 
 	// Combine arguments and pass to cube
 	std::string args;
 	if (argc > 1) {
-		int i;
-		for (i=1; i<argc; ++i) {
+		for (int i = 1; i < argc; ++i) {
 			args.append(" ");
 			args.append(argv[i]);
 		}
@@ -214,39 +221,41 @@ int	main( int argc, char* argv[] ) {
 	}
 	if (args.size() > 0) cube.apply(args);
 
-	// Start ncurses
-	Screen * 	scr = new Screen();
-
-	// Handle Screen Size
-	if (LINES < Screen::Height || COLS < Screen::Width) {
-		endwin();
-		std::cerr << "Error: Screen too small" << std::endl;
-		return 0;
+	if (interactive) {
+		// Start ncurses
+		Screen * 	scr = new Screen();
+		// Handle Screen Size
+		if (LINES < Screen::Height || COLS < Screen::Width) {
+			endwin();
+			std::cerr << "Error: Screen too small" << std::endl;
+			return 0;
+		}
+		signal(SIGWINCH, &resizeHandler);
+		// // Display an intro message
+		// scr->hello();
+		// // Wait until the user press a key
+		// nodelay(stdscr, FALSE);
+		// if (getch() == 'q') { return 0; }
+		nodelay(stdscr, TRUE);
+		// Clear the screen before game loop
+		clear();
+		// GAME LOOP
+		args = game_loop(cube, args);
+		delete scr;
 	}
-	signal(SIGWINCH, &resizeHandler);
+	if (verbose) {
+		std::cerr << "Arguments:" << args << std::endl;
+		std::cerr << "Mike Reid's Format:";
+		std::string *mike = cube.getMikeFormat();
+		for (int i = 0; i < 20; ++i) {
+			std::cerr << ' ' << mike[i];
+		}
+		std::cerr << std::endl << "Solution: ";
+	}
 
-	// Display an intro message
-	scr->hello();
-	// Wait until the user press a key
-	nodelay(stdscr, FALSE);
-	if (getch() == 'q') { return 0; }
-	nodelay(stdscr, TRUE);
-	// Clear the screen before game loop
-	clear();
-
-	// Create history
-	std::string history;
-
-	// GAME LOOP
-	history = game_loop(cube, args);
-	history.erase(0,1);
-
-	delete scr;
-	// std::cout << "Input: " << history << std::endl;
-	// std::cout << "History:" << history << std::endl;
-	std::cout << history << std::endl;
-	std::cout << "Solution: ";
-	solve(cube.getMikeFormat());
-	std::cout << std::endl;
+	std::string solution = solve(cube.getMikeFormat());
+	std::replace( solution.begin(), solution.end(), '3', '\'' );
+	solution.erase( std::remove( solution.begin(), solution.end(), '1' ), solution.end() );
+	std::cout << solution << std::endl;
 	return 0;
 }
