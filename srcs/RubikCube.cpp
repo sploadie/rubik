@@ -255,7 +255,8 @@ void RubikCube::apply( std::string commands ) {
 
 void RubikCube::draw_block( int x, int y, int c ) {
 	attron(COLOR_PAIR(c >> 8));
-	mvaddch(x, y, ((c << 8) >> 8) + '0');
+	// mvaddch(x, y, ((c << 8) >> 8) + '0');
+	mvaddch(x, y, ' ');
 	attroff(COLOR_PAIR(c >> 8));
 }
 

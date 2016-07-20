@@ -22,71 +22,12 @@
 #include "Screen.hpp"
 #include "RubikCube.hpp"
 
-// static void		print_data(int row, int col, int hp, int frame_count, int loop_remaining_time)
-// {
-// 	int 		i;
-
-// 	i = 0;
-// 	// Draw a limit for data display
-// 	move(LINES-2, 0);
-// 	while (i++ < COLS)
-// 		printw("-");
-// 	// Moving just above the end of the screen
-// 	move(LINES-1, 0);
-// 	attron(COLOR_PAIR(1));
-// 	attron(A_BOLD);
-// 	// Display player position just above the bottom of the screen
-// 	printw("Player pos = ");
-// 	attron(COLOR_PAIR(4));
-// 	printw("%d", row);
-// 	attron(COLOR_PAIR(1));
-// 	printw(" - ");
-// 	attron(COLOR_PAIR(4));
-// 	printw("%d", col);
-// 	// Display the score just above the end of the screen in the middle of COLS
-// 	move(LINES-1, (COLS/2)-5);
-// 	attron(COLOR_PAIR(3));
-// 	printw("Health = %d", hp);
-// 	move(LINES-1, COLS-12);
-// 	attron(COLOR_PAIR(2));
-// 	printw("Score = %d", g_score);
-// 	attroff(A_BOLD);
-// 	attroff(COLOR_PAIR(2));
-// 	// Display frames
-// 	move(0, 0);
-// 	attron(COLOR_PAIR(4));
-// 	printw("Frame %d", frame_count);
-// 	attroff(COLOR_PAIR(4));
-// 	// Display remaining milliseconds
-// 	move(0, 20);
-// 	attron(COLOR_PAIR(4));
-// 	printw("Remaining Useconds: %d", loop_remaining_time);
-// 	attroff(COLOR_PAIR(4));
-// }
-
-// static void		print_gameover()
-// {
-// 	move((LINES/2) - 1, (COLS/2) - 5);
-// 	attron(COLOR_PAIR(1));
-// 	attron(A_BOLD);
-// 	printw("GAME OVER");
-// 	attroff(A_BOLD);
-// 	attroff(COLOR_PAIR(1));
-
-// 	move((LINES/2) + 1, (COLS/2) - 8);
-// 	attron(COLOR_PAIR(1));
-// 	attron(A_BOLD);
-// 	printw("Press Q to Quit");
-// 	attroff(A_BOLD);
-// 	attroff(COLOR_PAIR(1));
-// }
-
 // static int clockToMilliseconds(clock_t ticks) {
 // 	return (ticks * 1000)/CLOCKS_PER_SEC;
 // }
 
 static int clockToUseconds(clock_t ticks) {
-	return (ticks * 1000000)/CLOCKS_PER_SEC;
+	return (ticks * 1000000) / CLOCKS_PER_SEC;
 }
 
 static void print_debug_data( unsigned int frame_count, clock_t loop_remaining_time ) {
@@ -102,7 +43,7 @@ static void print_debug_data( unsigned int frame_count, clock_t loop_remaining_t
 	attroff(COLOR_PAIR(1));
 }
 
-void draw_screen( std::string str, std::string list, RubikCube cube ) {
+void draw_screen( std::string args, RubikCube cube, std::string solution ) {
 	static unsigned int frame_count = 0;
 	clock_t loop_time;
 	static clock_t loop_start_time = 0;
@@ -115,26 +56,33 @@ void draw_screen( std::string str, std::string list, RubikCube cube ) {
 
 	// Drawing
 	cube.draw();
+	// Arguments
 	move(11, 0);
 	attron(COLOR_PAIR(1));
-	printw(str.c_str());
-	printw(list.c_str());
+	printw("Arguments:");
+	printw(args.c_str());
 	attroff(COLOR_PAIR(1));
-
 	// Mike
-	move(12, 0);
 	attron(COLOR_PAIR(1));
 	std::string *mike = cube.getMikeFormat();
-	printw("Mike Reid's Format:");
+	printw("\nMike Reid's Format:");
 	for (int i = 0; i < 20; ++i) {
 		printw(" ");
 		printw(mike[i].c_str());
 	}
 	attroff(COLOR_PAIR(1));
+	// Solution
+	if (solution != "") {
+		attron(COLOR_PAIR(1));
+		printw("\nSolution:");
+		printw(solution.c_str());
+		attroff(COLOR_PAIR(1));
+	}
 }
 
-static std::string game_loop( RubikCube & cube, std::string args ) {
+void game_loop( RubikCube & cube, std::string & args ) {
 	int ch;
+	bool doSolve = false;
 
 	// Main loop
 	while (42) {
@@ -165,11 +113,50 @@ static std::string game_loop( RubikCube & cube, std::string args ) {
 		} else if (ch == 'b') { cube[1].rotate_cc(); args.append(" D'"); // DOWN CC
 		} else if (ch == 'n') { cube[1].rotate_2();  args.append(" D2"); // DOWN 180
 		} else if (ch == ' ') {
+			doSolve = true;
 			break;
 		}
-		draw_screen("Arguments:", args, cube);
+		draw_screen(args, cube, "");
 	}
-	return args;
+	if (doSolve) {
+		clock_t loop_time = 400000;
+		clock_t loop_start_time = clockToUseconds(clock());
+		std::string solution = solve(cube.getMikeFormat());
+		std::string solution_buffer;
+		std::string cmd;
+		std::size_t pos;
+		while (42) {
+			ch = getch();
+			if (ch == 'q' || ch == 'Q')
+				break;
+			// Timing
+			if (clockToUseconds(clock()) - loop_start_time < loop_time)
+				continue;
+			loop_start_time = clockToUseconds(clock());
+			// Solution
+			pos = solution.find_first_of(" \n");
+			cmd = solution.substr(0, pos);
+			cube.apply(cmd);
+			solution_buffer += ' ';
+			solution_buffer += cmd;
+			if (pos != std::string::npos) ++pos;
+			solution.erase(0, pos);
+			draw_screen(args, cube, solution_buffer);
+			if (solution.size() == 0)
+				break;
+		}
+		attron(COLOR_PAIR(1));
+		attron(A_BOLD);
+		printw("\nPress Q to Quit");
+		attroff(A_BOLD);
+		attroff(COLOR_PAIR(1));
+		while (42) {
+			nodelay(stdscr, FALSE);
+			ch = getch();
+			if (ch == 'q' || ch == 'Q')
+				break;
+		}
+	}
 }
 
 void resizeHandler( int sig ) {
@@ -187,6 +174,9 @@ int	main( int argc, char* argv[] ) {
 	RubikCube cube;
 	bool verbose = false;
 	bool interactive = false;
+	std::string args;
+	std::string *mike;
+	std::string solution;
 
 	while (true) {
 		if (argc > 1) {
@@ -211,7 +201,6 @@ int	main( int argc, char* argv[] ) {
 	}
 
 	// Combine arguments and pass to cube
-	std::string args;
 	if (argc > 1) {
 		for (int i = 1; i < argc; ++i) {
 			args.append(" ");
@@ -240,22 +229,20 @@ int	main( int argc, char* argv[] ) {
 		// Clear the screen before game loop
 		clear();
 		// GAME LOOP
-		args = game_loop(cube, args);
+		game_loop(cube, args);
 		delete scr;
 	}
+	mike = cube.getMikeFormat();
+	solution = solve(mike);
 	if (verbose) {
 		std::cerr << "Arguments:" << args << std::endl;
 		std::cerr << "Mike Reid's Format:";
-		std::string *mike = cube.getMikeFormat();
 		for (int i = 0; i < 20; ++i) {
 			std::cerr << ' ' << mike[i];
 		}
-		std::cerr << std::endl << "Solution: ";
+		std::cerr << std::endl << "Solution: " << solution << std::endl;
+	} else {
+		std::cout << solution << std::endl;
 	}
-
-	std::string solution = solve(cube.getMikeFormat());
-	std::replace( solution.begin(), solution.end(), '3', '\'' );
-	solution.erase( std::remove( solution.begin(), solution.end(), '1' ), solution.end() );
-	std::cout << solution << std::endl;
 	return 0;
 }
