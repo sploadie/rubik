@@ -18,18 +18,20 @@ typedef struct History {
 
 void rotate( char k, s_cubelet cubelet[48] ) {
 	// std::cout << "K: " << static_cast<int>(k) << std::endl;
-	std::string data = "2#6'&78)5+1/AT[NJ_PERLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCEMPOACSRQDF";
+	std::string data = "RLQO@IAHPNSMBJCKLRMSDHEJNPOQFKGIQLSNF@DBROPMAGCE";
+	//                 "::::||||::::||||::::||||::::||||::::||||::::||||"
 	int i;
 	if (k < 4) {
 		for (i = 0; i < 4; ++i) {
-			 cubelet[64 ^ data[20 + k * 8 + i]].twist =
-			(cubelet[64 ^ data[20 + k * 8 + i]].twist + 2 - i % 2) % 3,
-			 cubelet[64 ^ data[20 + k * 8 + i + 4]].twist ^= k < 2;
+			// std::cout << "Index: " << 20 + k * 8 + i << " Value: " << data[20 + k * 8 + i] << std::endl;
+			 cubelet[64 ^ data[k * 8 + i]].twist =
+			(cubelet[64 ^ data[k * 8 + i]].twist + 2 - i % 2) % 3,
+			 cubelet[64 ^ data[k * 8 + i + 4]].twist ^= k < 2;
 		}
 	}
 	for (i = 0; i < 7; ++i) {
-		std::swap(cubelet[64 ^ data[20 + k * 8 + i + (i != 3)]],
-				  cubelet[64 ^ data[20 + k * 8 + i]]);
+		std::swap(cubelet[64 ^ data[k * 8 + i + (i != 3)]],
+				  cubelet[64 ^ data[k * 8 + i]]);
 	}
 }
 
